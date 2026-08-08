@@ -53,7 +53,7 @@ function VerifyPage() {
   });
 
   const handleDonate = async () => {
-    const record = await donate({ amount, currency: "USDT", charityIndex, impact: "" });
+    const record = await donate({ data: { amount, currency: "USDT", charityIndex, impact: "" } });
     setNewRecord(record);
   };
 
