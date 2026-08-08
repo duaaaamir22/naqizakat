@@ -310,12 +310,12 @@ function CalculatorPage() {
         <div className="mt-6 rounded-xl border border-border bg-card p-6">
           <h3 className="font-display text-lg font-semibold text-foreground">Asset breakdown</h3>
           <div className="mt-4 overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full min-w-[640px] text-sm">
               <thead>
                 <tr className="border-b border-border text-left text-muted-foreground">
-                  <th className="py-2 font-medium">Asset</th>
-                  <th className="py-2 font-medium text-right">Gross value</th>
-                  <th className="py-2 font-medium text-right">Zakatable</th>
+                  <th className="w-1/4 py-2 font-medium">Asset</th>
+                  <th className="w-1/6 py-2 pr-4 text-right font-medium">Gross value</th>
+                  <th className="w-1/6 py-2 pr-4 text-right font-medium">Zakatable</th>
                   <th className="py-2 font-medium">Reasoning</th>
                 </tr>
               </thead>
@@ -324,14 +324,14 @@ function CalculatorPage() {
                   <tr key={item.id} className="border-b border-border last:border-0">
                     <td className="py-3 font-medium text-foreground">
                       {item.label}
-                      <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                      <span className="ml-2 inline-block rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                         {assetTypeLabel(item.type)}
                       </span>
                     </td>
-                    <td className="py-3 text-right text-foreground">
+                    <td className="py-3 pr-4 text-right tabular-nums text-foreground">
                       {formatCurrency(item.grossValue)}
                     </td>
-                    <td className="py-3 text-right font-medium text-gold">
+                    <td className="py-3 pr-4 text-right tabular-nums font-medium text-gold">
                       {formatCurrency(item.zakatableValue)}
                     </td>
                     <td className="py-3 text-muted-foreground">{item.reasoning}</td>
