@@ -65,6 +65,9 @@ export const recordDonation = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const charity = MOCK_CHARITIES[data.charityIndex];
+    if (!charity) {
+      throw new Error("Invalid charity selection");
+    }
     const donorWallet = "0x1a2...d8e9";
     const record: BlockchainRecord = {
       id: crypto.randomUUID(),
