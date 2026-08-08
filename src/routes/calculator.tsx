@@ -17,7 +17,6 @@ import {
   computeZakat,
   fetchMarketPrices,
   formatCurrency,
-  Madhab,
   PriceMap,
 } from "../lib/zakat";
 import { useServerFn } from "@tanstack/react-start";
@@ -30,13 +29,13 @@ export const Route = createFileRoute("/calculator")({
       {
         name: "description",
         content:
-          "Calculate your zakat obligation across cash, gold, crypto, stocks, and business assets with real-time market prices and madhab-specific rules.",
+          "Calculate your zakat obligation across cash, gold, crypto, stocks, and business assets with real-time market prices and Hanafi guidance.",
       },
       { property: "og:title", content: "Smart Zakat Calculator — ZakatChain" },
       {
         property: "og:description",
         content:
-          "Multi-asset zakat calculation with real-time prices and Shariah compliance settings.",
+          "Multi-asset zakat calculation with real-time prices and Hanafi guidance.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -54,7 +53,6 @@ const DEFAULT_ASSETS: AssetInput[] = [
 function CalculatorPage() {
   const [assets, setAssets] = useState<AssetInput[]>(DEFAULT_ASSETS);
   const [debts, setDebts] = useState(0);
-  const [madhab, setMadhab] = useState<Madhab>("hanafi");
   const [activeTab, setActiveTab] = useState<"manual" | "auto">("manual");
   const getPrices = useServerFn(fetchMarketPrices);
 
@@ -72,7 +70,7 @@ function CalculatorPage() {
     usdtUsd: 1,
   };
 
-  const result = computeZakat(assets, debts, priceMap, madhab);
+  const result = computeZakat(assets, debts, priceMap);
 
   const addAsset = (type: AssetType) => {
     const newAsset: AssetInput = {
