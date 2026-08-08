@@ -103,7 +103,7 @@ function CalculatorPage() {
             Smart Zakat Calculator
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Enter your assets, choose your school of thought, and get a real-time zakat estimate.
+            Enter your assets and get a real-time zakat estimate based on Hanafi guidance.
           </p>
         </div>
 
@@ -130,21 +130,16 @@ function CalculatorPage() {
             <div className="rounded-xl border border-border bg-card p-6">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="font-display text-xl font-semibold text-foreground">Your assets</h2>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">School:</span>
-                  <select
-                    value={madhab}
-                    onChange={(e) => setMadhab(e.target.value as Madhab)}
-                    className="rounded-md border border-border bg-background px-3 py-1.5 text-sm text-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
-                  >
-                    <option value="hanafi">Hanafi (silver nisab)</option>
-                    <option value="maliki">Maliki (gold nisab)</option>
-                    <option value="shafi">Shafi'i (gold nisab)</option>
-                    <option value="hanbali">Hanbali (gold nisab)</option>
-                    <option value="shia">Shia (gold nisab)</option>
-                  </select>
+                <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs font-medium text-gold-foreground">
+                  <Info className="h-3.5 w-3.5" />
+                  Hanafi guidance
                 </div>
               </div>
+
+              <p className="mb-4 text-sm text-muted-foreground">
+                This calculator follows the Hanafi school of thought within Sunni Islam, using the
+                silver nisab threshold to determine zakat liability.
+              </p>
 
               <div className="space-y-4">
                 {assets.map((asset) => (
