@@ -43,27 +43,14 @@ function shortenWallet(wallet: string): string {
 }
 
 export const recordDonation = createServerFn({ method: "POST" })
-  .inputValidator((data) => {
-    if (typeof data !== "object" || data === null) {
-      throw new Error("Invalid donation data");
-    }
-    const { amount, currency, charityIndex, impact } = data as {
-      amount?: number;
-      currency?: string;
-      charityIndex?: number;
-      impact?: string;
-    };
-    if (typeof amount !== "number" || amount <= 0) {
-      throw new Error("Amount must be a positive number");
-    }
-    if (typeof currency !== "string" || currency.length === 0) {
-      throw new Error("Currency is required");
-    }
-    if (typeof charityIndex !== "number" || charityIndex < 0 || charityIndex >= MOCK_CHARITIES.length) {
-      throw new Error("Invalid charity selection");
-    }
-    return { amount, currency, charityIndex, impact: impact ?? "" };
-  })
+  .validator(
+    z.object({
+      amount: z.number().positive(),
+      currency: z.string().min(1),
+      charityIndex: z.number().int().min(0).max(MOCK_CHARITIES.length - 1),
+      impact: z.string().default(""),
+    }),
+  )
   .handler(async ({ data }) => {
     const charity = MOCK_CHARITIES[data.charityIndex];
     if (!charity) {
