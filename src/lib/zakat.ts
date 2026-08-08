@@ -54,15 +54,10 @@ const DEFAULT_PRICES: PriceMap = {
   usdtUsd: 1,
 };
 
-export function getNisabThreshold(prices: PriceMap, madhab: Madhab): number {
-  // Hanafi traditionally uses silver nisab; others use gold nisab.
-  if (madhab === "hanafi") {
-    return prices.silverUsdPerGram * SILVER_NISAB_GRAMS;
-  }
-  return prices.goldUsdPerGram * GOLD_NISAB_GRAMS;
+export function getNisabThreshold(prices: PriceMap): number {
+  // Hanafi school uses the silver nisab threshold.
+  return prices.silverUsdPerGram * SILVER_NISAB_GRAMS;
 }
-
-export type Madhab = "hanafi" | "maliki" | "shafi" | "hanbali" | "shia";
 
 export function calculateAssetValue(asset: AssetInput, prices: PriceMap): number {
   if (asset.value && asset.value > 0) {
@@ -90,9 +85,8 @@ export function computeZakat(
   assets: AssetInput[],
   debts: number,
   prices: PriceMap,
-  madhab: Madhab,
 ): ZakatCalculation {
-  const nisabThreshold = getNisabThreshold(prices, madhab);
+  const nisabThreshold = getNisabThreshold(prices);
   let totalGross = 0;
   const breakdown: AssetBreakdown[] = [];
 
@@ -173,7 +167,7 @@ export function computeZakat(
     totalZakatable,
     zakatDue,
     nisabThreshold,
-    nisabUsed: madhab === "hanafi" ? "silver" : "gold",
+    nisabUsed: "silver",
     isLiable,
     breakdown,
     deductions,
