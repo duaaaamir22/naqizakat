@@ -28,7 +28,7 @@ const features = [
     icon: Calculator,
     title: "Smart Zakat Calculator",
     description:
-      "Calculate zakat across cash, gold, silver, stocks, crypto, and business assets with real-time prices and madhab-specific rules.",
+      "Calculate zakat across cash, gold, silver, stocks, crypto, and business assets with real-time prices and Hanafi guidance.",
   },
   {
     icon: ShieldCheck,

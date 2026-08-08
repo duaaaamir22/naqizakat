@@ -95,7 +95,6 @@ function DashboardPage() {
               <thead>
                 <tr className="border-b border-border text-left text-muted-foreground">
                   <th className="py-2 font-medium">Date</th>
-                  <th className="py-2 font-medium">Madhab</th>
                   <th className="py-2 font-medium text-right">Total assets</th>
                   <th className="py-2 font-medium text-right">Zakat due</th>
                 </tr>
@@ -104,7 +103,6 @@ function DashboardPage() {
                 {history.map((row) => (
                   <tr key={row.date} className="border-b border-border last:border-0">
                     <td className="py-3 text-foreground">{row.date}</td>
-                    <td className="py-3 text-foreground">{row.madhab}</td>
                     <td className="py-3 text-right text-foreground">
                       {formatCurrency(row.assets)}
                     </td>
