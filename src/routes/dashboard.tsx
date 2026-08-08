@@ -29,9 +29,9 @@ const stats = [
 ];
 
 const history = [
-  { date: "2026-03-15", zakatDue: 2840, assets: 113600, madhab: "Hanafi" },
-  { date: "2025-04-02", zakatDue: 2650, assets: 106000, madhab: "Hanafi" },
-  { date: "2024-03-22", zakatDue: 2100, assets: 84000, madhab: "Hanafi" },
+  { date: "2026-03-15", zakatDue: 2840, assets: 113600 },
+  { date: "2025-04-02", zakatDue: 2650, assets: 106000 },
+  { date: "2024-03-22", zakatDue: 2100, assets: 84000 },
 ];
 
 function DashboardPage() {
