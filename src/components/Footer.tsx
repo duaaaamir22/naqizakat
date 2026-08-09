@@ -12,7 +12,7 @@ export function Footer() {
             <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <span className="font-display text-sm font-bold">ز</span>
             </span>
-            <span className="font-display text-sm font-semibold text-foreground">ZakatChain</span>
+            <span className="font-display text-sm font-semibold text-foreground">Naqi</span>
           </div>
 
           <p className="text-center text-xs text-muted-foreground">

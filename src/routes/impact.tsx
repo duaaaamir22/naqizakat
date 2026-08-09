@@ -4,12 +4,12 @@ import { Heart, Users, GraduationCap, Stethoscope, Utensils, Sprout } from "luci
 export const Route = createFileRoute("/impact")({
   head: () => ({
     meta: [
-      { title: "Impact Tracking — ZakatChain" },
+      { title: "Impact Tracking — Naqi" },
       {
         name: "description",
         content: "See how your zakat donations create real-world outcomes for beneficiaries.",
       },
-      { property: "og:title", content: "Impact Tracking — ZakatChain" },
+      { property: "og:title", content: "Impact Tracking — Naqi" },
       {
         property: "og:description",
         content: "See how your zakat donations create real-world outcomes for beneficiaries.",

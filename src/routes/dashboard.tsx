@@ -5,12 +5,12 @@ import { formatCurrency } from "../lib/zakat";
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
     meta: [
-      { title: "Dashboard — ZakatChain" },
+      { title: "Dashboard — Naqi" },
       {
         name: "description",
         content: "Track your zakat portfolio, historical calculations, and donation activity.",
       },
-      { property: "og:title", content: "Dashboard — ZakatChain" },
+      { property: "og:title", content: "Dashboard — Naqi" },
       {
         property: "og:description",
         content: "Track your zakat portfolio, historical calculations, and donation activity.",

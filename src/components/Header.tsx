@@ -19,7 +19,7 @@ export function Header() {
             <span className="font-display text-lg font-bold">ز</span>
           </span>
           <span className="font-display text-lg font-semibold tracking-tight text-foreground">
-            ZakatChain
+            Naqi
           </span>
         </Link>
 

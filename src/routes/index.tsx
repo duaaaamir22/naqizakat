@@ -4,13 +4,13 @@ import { Calculator, ShieldCheck, Leaf, TrendingUp, ArrowRight } from "lucide-re
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ZakatChain — Transparent Islamic Charitable Finance" },
+      { title: "Naqi — Transparent Islamic Charitable Finance" },
       {
         name: "description",
         content:
           "A blockchain-enabled zakat platform for automated multi-asset calculation, Shariah compliance, and transparent impact tracking.",
       },
-      { property: "og:title", content: "ZakatChain — Transparent Islamic Charitable Finance" },
+      { property: "og:title", content: "Naqi — Transparent Islamic Charitable Finance" },
       {
         property: "og:description",
         content:
@@ -67,7 +67,7 @@ function HomePage() {
               impact.
             </h1>
             <p className="mt-6 text-lg text-muted-foreground md:text-xl">
-              ZakatChain combines AI-powered multi-asset calculation with blockchain transparency
+              Naqi combines AI-powered multi-asset calculation with blockchain transparency
               to restore confidence in Islamic charitable giving.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
