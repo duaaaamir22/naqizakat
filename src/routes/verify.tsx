@@ -23,12 +23,12 @@ import {
 export const Route = createFileRoute("/verify")({
   head: () => ({
     meta: [
-      { title: "Blockchain Verification — ZakatChain" },
+      { title: "Blockchain Verification — Naqi" },
       {
         name: "description",
         content: "Verify every donation on the simulated blockchain with traceable transaction hashes.",
       },
-      { property: "og:title", content: "Blockchain Verification — ZakatChain" },
+      { property: "og:title", content: "Blockchain Verification — Naqi" },
       {
         property: "og:description",
         content: "Verify every donation on the simulated blockchain with traceable transaction hashes.",

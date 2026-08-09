@@ -79,7 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "ZakatChain — Transparent Islamic Charitable Finance" },
+      { title: "Naqi — Transparent Islamic Charitable Finance" },
       {
         name: "description",
         content:
@@ -88,7 +88,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: "Duaa E Aamir — MSc Financial Technology" },
       {
         property: "og:title",
-        content: "ZakatChain — Transparent Islamic Charitable Finance",
+        content: "Naqi — Transparent Islamic Charitable Finance",
       },
       {
         property: "og:description",

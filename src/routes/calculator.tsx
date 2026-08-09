@@ -25,13 +25,13 @@ import { useQuery } from "@tanstack/react-query";
 export const Route = createFileRoute("/calculator")({
   head: () => ({
     meta: [
-      { title: "Smart Zakat Calculator — ZakatChain" },
+      { title: "Smart Zakat Calculator — Naqi" },
       {
         name: "description",
         content:
           "Calculate your zakat obligation across cash, gold, crypto, stocks, and business assets with real-time market prices and Hanafi guidance.",
       },
-      { property: "og:title", content: "Smart Zakat Calculator — ZakatChain" },
+      { property: "og:title", content: "Smart Zakat Calculator — Naqi" },
       {
         property: "og:description",
         content:
