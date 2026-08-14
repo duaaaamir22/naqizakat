@@ -1,0 +1,31 @@
+{
+  "name": "Naqi — Transparent Zakat Tracking",
+  "short_name": "Naqi",
+  "description": "Calculate zakat across multiple assets, verify donations on-chain, and track real-world impact.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f2e7",
+  "theme_color": "#0d3b2e",
+  "icons": [
+    {
+      "src": "/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
