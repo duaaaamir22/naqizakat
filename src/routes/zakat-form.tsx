@@ -325,7 +325,7 @@ interface FieldProps {
   suffix: string;
   value: string;
   onChange: (value: string) => void;
-  helperValue?: string;
+  helperValue?: string | undefined;
 }
 
 function Field({

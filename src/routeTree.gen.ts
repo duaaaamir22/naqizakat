@@ -14,6 +14,7 @@ import { Route as CalculatorRouteImport } from './routes/calculator'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ImpactRouteImport } from './routes/impact'
 import { Route as VerifyRouteImport } from './routes/verify'
+import { Route as ZakatFormRouteImport } from './routes/zakat-form'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +41,11 @@ const VerifyRoute = VerifyRouteImport.update({
   path: '/verify',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ZakatFormRoute = ZakatFormRouteImport.update({
+  id: '/zakat-form',
+  path: '/zakat-form',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/impact': typeof ImpactRoute
   '/verify': typeof VerifyRoute
+  '/zakat-form': typeof ZakatFormRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/impact': typeof ImpactRoute
   '/verify': typeof VerifyRoute
+  '/zakat-form': typeof ZakatFormRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,22 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/impact': typeof ImpactRoute
   '/verify': typeof VerifyRoute
+  '/zakat-form': typeof ZakatFormRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/calculator' | '/dashboard' | '/impact' | '/verify'
+  fullPaths:
+    '/' | '/calculator' | '/dashboard' | '/impact' | '/verify' | '/zakat-form'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/calculator' | '/dashboard' | '/impact' | '/verify'
-  id: '__root__' | '/' | '/calculator' | '/dashboard' | '/impact' | '/verify'
+  to: '/' | '/calculator' | '/dashboard' | '/impact' | '/verify' | '/zakat-form'
+  id:
+    | '__root__'
+    | '/'
+    | '/calculator'
+    | '/dashboard'
+    | '/impact'
+    | '/verify'
+    | '/zakat-form'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +94,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   ImpactRoute: typeof ImpactRoute
   VerifyRoute: typeof VerifyRoute
+  ZakatFormRoute: typeof ZakatFormRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +134,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/zakat-form': {
+      id: '/zakat-form'
+      path: '/zakat-form'
+      fullPath: '/zakat-form'
+      preLoaderRoute: typeof ZakatFormRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,6 +150,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   ImpactRoute: ImpactRoute,
   VerifyRoute: VerifyRoute,
+  ZakatFormRoute: ZakatFormRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
