@@ -1,12 +1,20 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Calculator, LayoutDashboard, Leaf, ShieldCheck } from "lucide-react";
+import {
+  Calculator,
+  ClipboardList,
+  LayoutDashboard,
+  Leaf,
+  ShieldCheck,
+} from "lucide-react";
 
 const navItems = [
   { to: "/calculator", label: "Calculator", icon: Calculator },
+  { to: "/zakat-form", label: "My Assets", icon: ClipboardList },
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/impact", label: "Impact", icon: Leaf },
   { to: "/verify", label: "Verify", icon: ShieldCheck },
 ];
+
 
 export function Header() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -64,7 +72,7 @@ function MobileNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background md:hidden">
-      <div className="grid grid-cols-5 gap-1 p-2">
+      <div className="grid grid-cols-6 gap-1 p-2">
         <Link
           to="/"
           className={`flex flex-col items-center justify-center gap-1 rounded-md px-2 py-2 text-xs transition-colors ${
