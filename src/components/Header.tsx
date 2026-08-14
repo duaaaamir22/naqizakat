@@ -1,12 +1,20 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Calculator, LayoutDashboard, Leaf, ShieldCheck } from "lucide-react";
+import {
+  Calculator,
+  ClipboardList,
+  LayoutDashboard,
+  Leaf,
+  ShieldCheck,
+} from "lucide-react";
 
 const navItems = [
   { to: "/calculator", label: "Calculator", icon: Calculator },
+  { to: "/zakat-form", label: "My Assets", icon: ClipboardList },
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/impact", label: "Impact", icon: Leaf },
   { to: "/verify", label: "Verify", icon: ShieldCheck },
 ];
+
 
 export function Header() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
