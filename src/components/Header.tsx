@@ -6,6 +6,8 @@ import {
   Leaf,
   ShieldCheck,
 } from "lucide-react";
+import naqiMark from "../assets/naqi-mark.png.asset.json";
+
 
 const navItems = [
   { to: "/calculator", label: "Calculator", icon: Calculator },
