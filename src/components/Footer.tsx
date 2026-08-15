@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Heart } from "lucide-react";
+import naqiMark from "../assets/naqi-mark.png.asset.json";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -9,11 +10,15 @@ export function Footer() {
       <div className="container mx-auto px-4 py-8 lg:px-8">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-2">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <span className="font-display text-sm font-bold">ز</span>
-            </span>
+            <img
+              src={naqiMark.url}
+              alt="Naqi logo"
+              className="h-7 w-7 rounded-lg"
+              loading="lazy"
+            />
             <span className="font-display text-sm font-semibold text-foreground">Naqi</span>
           </div>
+
 
           <p className="text-center text-xs text-muted-foreground">
             MSc Financial Technology dissertation prototype — blockchain for transparent Islamic
