@@ -23,13 +23,12 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
         <Link to="/" className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <span className="font-display text-lg font-bold">ز</span>
-          </span>
+          <img src={naqiMark.url} alt="Naqi logo" className="h-9 w-9 rounded-lg" />
           <span className="font-display text-lg font-semibold tracking-tight text-foreground">
             Naqi
           </span>
         </Link>
+
 
         <nav className="hidden items-center gap-1 md:flex">
           {navItems.map((item) => {
