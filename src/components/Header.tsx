@@ -82,7 +82,7 @@ function MobileNav() {
               : "text-muted-foreground hover:bg-accent/50"
           }`}
         >
-          <span className="font-display text-base font-bold">ز</span>
+          <img src={naqiMark.url} alt="" className="h-4 w-4 rounded" />
           <span>Home</span>
         </Link>
         {navItems.map((item) => {
