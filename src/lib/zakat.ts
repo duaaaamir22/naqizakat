@@ -160,6 +160,7 @@ export function computeZakat(
     }
 
     totalGross += grossValue;
+    totalZakatableAssets += zakatableValue;
     breakdown.push({
       id: asset.id,
       label: asset.label,
@@ -171,7 +172,7 @@ export function computeZakat(
   }
 
   const deductions = Math.max(0, debts);
-  const totalZakatable = Math.max(0, totalGross - deductions);
+  const totalZakatable = Math.max(0, totalZakatableAssets - deductions);
   const isLiable = totalZakatable >= nisabThreshold;
   const zakatDue = isLiable ? totalZakatable * ZAKAT_RATE : 0;
 
