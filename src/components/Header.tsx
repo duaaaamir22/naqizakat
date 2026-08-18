@@ -26,7 +26,7 @@ export function Header() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
         <Link to="/" className="flex items-center gap-2">
           <img src={naqiMark.url} alt="Naqi logo" className="h-9 w-9 rounded-lg" />
-          <span className="font-display text-lg font-semibold tracking-tight text-foreground">
+          <span className="font-wordmark text-2xl font-semibold leading-none tracking-tight text-foreground">
             Naqi
           </span>
         </Link>
