@@ -16,7 +16,7 @@ export function Footer() {
               className="h-7 w-7 rounded-lg"
               loading="lazy"
             />
-            <span className="font-display text-sm font-semibold text-foreground">Naqi</span>
+            <span className="font-wordmark text-lg font-semibold text-foreground">Naqi</span>
           </div>
 
 

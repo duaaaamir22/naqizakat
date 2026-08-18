@@ -65,6 +65,7 @@
 
   --font-display: "Playfair Display", Georgia, serif;
   --font-body: "Inter", system-ui, sans-serif;
+  --font-wordmark: "Cormorant Garamond", "Playfair Display", Georgia, serif;
 }
 
 :root {
