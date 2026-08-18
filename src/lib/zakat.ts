@@ -12,6 +12,10 @@ export interface AssetInput {
   unitPrice?: number;
   heldForOneYear?: boolean;
   isHaramExcluded?: boolean;
+  /** Overrides the default zakatable proportion of the gross value (0–1). */
+  zakatableRatio?: number;
+  /** Overrides the default Shariah reasoning shown in the breakdown. */
+  reasoningOverride?: string;
 }
 
 export interface PriceMap {
