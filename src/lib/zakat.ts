@@ -92,6 +92,7 @@ export function computeZakat(
 ): ZakatCalculation {
   const nisabThreshold = getNisabThreshold(prices);
   let totalGross = 0;
+  let totalZakatableAssets = 0;
   const breakdown: AssetBreakdown[] = [];
 
   for (const asset of assets) {
