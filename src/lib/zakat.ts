@@ -146,6 +146,14 @@ export function computeZakat(
         break;
     }
 
+    if (asset.zakatableRatio !== undefined && asset.heldForOneYear !== false) {
+      zakatableValue = grossValue * Math.min(Math.max(asset.zakatableRatio, 0), 1);
+    }
+
+    if (asset.reasoningOverride) {
+      reasoning = asset.reasoningOverride;
+    }
+
     if (asset.isHaramExcluded) {
       zakatableValue = 0;
       reasoning += " Excluded from zakatable base due to non-Shariah-compliant income source.";
