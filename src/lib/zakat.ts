@@ -12,6 +12,10 @@ export interface AssetInput {
   unitPrice?: number;
   heldForOneYear?: boolean;
   isHaramExcluded?: boolean;
+  /** Overrides the default zakatable proportion of the gross value (0–1). */
+  zakatableRatio?: number;
+  /** Overrides the default Shariah reasoning shown in the breakdown. */
+  reasoningOverride?: string;
 }
 
 export interface PriceMap {
@@ -88,6 +92,7 @@ export function computeZakat(
 ): ZakatCalculation {
   const nisabThreshold = getNisabThreshold(prices);
   let totalGross = 0;
+  let totalZakatableAssets = 0;
   const breakdown: AssetBreakdown[] = [];
 
   for (const asset of assets) {
@@ -142,12 +147,21 @@ export function computeZakat(
         break;
     }
 
+    if (asset.zakatableRatio !== undefined && asset.heldForOneYear !== false) {
+      zakatableValue = grossValue * Math.min(Math.max(asset.zakatableRatio, 0), 1);
+    }
+
+    if (asset.reasoningOverride) {
+      reasoning = asset.reasoningOverride;
+    }
+
     if (asset.isHaramExcluded) {
       zakatableValue = 0;
       reasoning += " Excluded from zakatable base due to non-Shariah-compliant income source.";
     }
 
     totalGross += grossValue;
+    totalZakatableAssets += zakatableValue;
     breakdown.push({
       id: asset.id,
       label: asset.label,
@@ -159,7 +173,7 @@ export function computeZakat(
   }
 
   const deductions = Math.max(0, debts);
-  const totalZakatable = Math.max(0, totalGross - deductions);
+  const totalZakatable = Math.max(0, totalZakatableAssets - deductions);
   const isLiable = totalZakatable >= nisabThreshold;
   const zakatDue = isLiable ? totalZakatable * ZAKAT_RATE : 0;
 

@@ -6,6 +6,14 @@ import {
   ClipboardList,
   Coins,
   Banknote,
+  Landmark,
+  Smartphone,
+  Bitcoin,
+  LineChart,
+  PieChart,
+  ScrollText,
+  Receipt,
+  Wallet,
   Package,
   HandCoins,
   Info,
@@ -29,13 +37,13 @@ export const Route = createFileRoute("/zakat-form")({
       {
         name: "description",
         content:
-          "Enter your cash, gold, business inventory, receivables and debts to get a Hanafi-calculated zakat amount using the silver nisab threshold.",
+          "Enter your precious metals, cash and savings, investments, business assets and debts to get a Hanafi-calculated zakat amount using the silver nisab threshold.",
       },
       { property: "og:title", content: "Zakat Inputs Form — Naqi" },
       {
         property: "og:description",
         content:
-          "A simple guided form for cash, gold, inventory and receivables with an instant Hanafi zakat result.",
+          "A guided Hanafi form covering gold, silver, cash, bank accounts, digital wallets, crypto, stocks, funds, sukuk and bonds.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -52,17 +60,37 @@ const FALLBACK_PRICES: PriceMap = {
   usdtUsd: 1,
 };
 
+type ShareIntent = "trading" | "longTerm";
+
 interface FormState {
-  cash: string;
   goldGrams: string;
+  silverGrams: string;
+  cash: string;
+  bankAccounts: string;
+  digitalWallets: string;
+  crypto: string;
+  stocks: string;
+  funds: string;
+  sukuk: string;
+  bonds: string;
+  otherInvestments: string;
   inventory: string;
   receivables: string;
   debts: string;
 }
 
 const EMPTY_FORM: FormState = {
-  cash: "",
   goldGrams: "",
+  silverGrams: "",
+  cash: "",
+  bankAccounts: "",
+  digitalWallets: "",
+  crypto: "",
+  stocks: "",
+  funds: "",
+  sukuk: "",
+  bonds: "",
+  otherInvestments: "",
   inventory: "",
   receivables: "",
   debts: "",
@@ -77,6 +105,7 @@ function parseAmount(raw: string): number {
 
 function ZakatFormPage() {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
+  const [shareIntent, setShareIntent] = useState<ShareIntent>("trading");
   const getPrices = useServerFn(fetchMarketPrices);
 
   const { data: prices, isLoading: pricesLoading } = useQuery({
@@ -87,20 +116,13 @@ function ZakatFormPage() {
 
   const priceMap: PriceMap = prices ?? FALLBACK_PRICES;
 
-  const cash = parseAmount(form.cash);
-  const goldGrams = parseAmount(form.goldGrams);
-  const inventory = parseAmount(form.inventory);
-  const receivables = parseAmount(form.receivables);
-  const debts = parseAmount(form.debts);
+  const n = (key: keyof FormState) => parseAmount(form[key]);
+
+  const goldGrams = n("goldGrams");
+  const silverGrams = n("silverGrams");
+  const stocks = n("stocks");
 
   const assets: AssetInput[] = [
-    {
-      id: "cash",
-      type: "cash",
-      label: "Cash, bank & savings",
-      value: cash,
-      heldForOneYear: true,
-    },
     {
       id: "gold",
       type: "gold",
@@ -111,24 +133,84 @@ function ZakatFormPage() {
       heldForOneYear: true,
     },
     {
+      id: "silver",
+      type: "silver",
+      label: `Silver (${silverGrams || 0} g)`,
+      value: silverGrams * priceMap.silverUsdPerGram,
+      quantity: silverGrams,
+      unitPrice: priceMap.silverUsdPerGram,
+      heldForOneYear: true,
+    },
+    { id: "cash", type: "cash", label: "Cash in hand", value: n("cash") },
+    { id: "bank", type: "cash", label: "Bank accounts", value: n("bankAccounts") },
+    { id: "wallets", type: "cash", label: "Digital wallets", value: n("digitalWallets") },
+    { id: "crypto", type: "crypto", label: "Cryptocurrency", value: n("crypto") },
+    {
+      id: "stocks",
+      type: "stocks",
+      label: "Stocks / shares",
+      value: stocks,
+      zakatableRatio: shareIntent === "trading" ? 1 : 0.25,
+      reasoningOverride:
+        shareIntent === "trading"
+          ? "Shares held for short-term trading or resale are treated as trade goods, so the full market value is zakatable."
+          : "Shares held long-term for dividends are zakatable on the underlying liquid assets only (25% proxy).",
+    },
+    {
+      id: "funds",
+      type: "stocks",
+      label: "ETFs / mutual funds",
+      value: n("funds"),
+      zakatableRatio: 0.25,
+      reasoningOverride:
+        "Funds are zakatable on the liquid, tradeable portion of their holdings (25% proxy).",
+    },
+    {
+      id: "sukuk",
+      type: "stocks",
+      label: "Sukuk",
+      value: n("sukuk"),
+      zakatableRatio: 1,
+      reasoningOverride:
+        "Sukuk certificates are zakatable at market value, as they represent tradeable ownership shares.",
+    },
+    {
+      id: "bonds",
+      type: "stocks",
+      label: "Bonds",
+      value: n("bonds"),
+      zakatableRatio: 1,
+      reasoningOverride:
+        "Bond principal is zakatable at recoverable value; interest income should be given away separately and is not zakat.",
+    },
+    {
+      id: "otherInvestments",
+      type: "stocks",
+      label: "Other investments",
+      value: n("otherInvestments"),
+      zakatableRatio: 1,
+      reasoningOverride:
+        "Other liquid investments are zakatable at their current realisable value.",
+    },
+    {
       id: "inventory",
       type: "business",
       label: "Business inventory (resale value)",
-      value: inventory,
-      heldForOneYear: true,
+      value: n("inventory"),
     },
     {
       id: "receivables",
       type: "receivables",
       label: "Receivables owed to you",
-      value: receivables,
-      heldForOneYear: true,
+      value: n("receivables"),
     },
   ];
 
+  const debts = n("debts");
   const result = computeZakat(assets, debts, priceMap);
-  const hasInput = cash + goldGrams + inventory + receivables > 0;
+  const hasInput = result.totalGross > 0;
   const shortfall = Math.max(0, result.nisabThreshold - result.totalZakatable);
+  const visibleBreakdown = result.breakdown.filter((item) => item.grossValue > 0);
 
   const set = (key: keyof FormState) => (value: string) =>
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -153,78 +235,184 @@ function ZakatFormPage() {
         <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
           {/* Inputs */}
           <section className="space-y-4">
-            <div className="rounded-xl border border-border bg-card p-5">
-              <h2 className="font-display text-base font-semibold text-foreground">
-                Zakatable assets
-              </h2>
-              <p className="mt-1 text-xs text-muted-foreground">
-                All amounts in USD unless the field states otherwise.
-              </p>
+            <Group
+              title="Precious Metals"
+              subtitle="Enter weight in grams — Naqi values it at the live market price."
+            >
+              <Field
+                icon={Coins}
+                label="Gold"
+                hint={`Valued at ${formatCurrency(priceMap.goldUsdPerGram)}/g${pricesLoading ? " (updating…)" : ""}.`}
+                suffix="grams"
+                value={form.goldGrams}
+                onChange={set("goldGrams")}
+                helperValue={
+                  goldGrams > 0
+                    ? `≈ ${formatCurrency(goldGrams * priceMap.goldUsdPerGram)}`
+                    : undefined
+                }
+              />
+              <Field
+                icon={Coins}
+                label="Silver"
+                hint={`Valued at ${formatCurrency(priceMap.silverUsdPerGram)}/g${pricesLoading ? " (updating…)" : ""}.`}
+                suffix="grams"
+                value={form.silverGrams}
+                onChange={set("silverGrams")}
+                helperValue={
+                  silverGrams > 0
+                    ? `≈ ${formatCurrency(silverGrams * priceMap.silverUsdPerGram)}`
+                    : undefined
+                }
+              />
+            </Group>
 
-              <div className="mt-5 space-y-5">
-                <Field
-                  icon={Banknote}
-                  label="Cash, bank & savings"
-                  hint="Wallet cash, current and savings accounts, digital wallets."
-                  suffix="USD"
-                  value={form.cash}
-                  onChange={set("cash")}
-                />
-                <Field
-                  icon={Coins}
-                  label="Gold"
-                  hint={`Weight in grams. Valued at ${formatCurrency(priceMap.goldUsdPerGram)}/g${pricesLoading ? " (updating…)" : ""}.`}
-                  suffix="grams"
-                  value={form.goldGrams}
-                  onChange={set("goldGrams")}
-                  helperValue={
-                    goldGrams > 0
-                      ? `≈ ${formatCurrency(goldGrams * priceMap.goldUsdPerGram)}`
-                      : undefined
-                  }
-                />
-                <Field
-                  icon={Package}
-                  label="Business inventory"
-                  hint="Trade goods and stock held for sale, at current resale value."
-                  suffix="USD"
-                  value={form.inventory}
-                  onChange={set("inventory")}
-                />
-                <Field
-                  icon={HandCoins}
-                  label="Receivables"
-                  hint="Money owed to you that you strongly expect to recover."
-                  suffix="USD"
-                  value={form.receivables}
-                  onChange={set("receivables")}
-                />
-              </div>
-            </div>
+            <Group title="Cash & Savings" subtitle="All amounts in USD.">
+              <Field
+                icon={Banknote}
+                label="Cash"
+                hint="Physical cash you hold at home or on you."
+                suffix="USD"
+                value={form.cash}
+                onChange={set("cash")}
+              />
+              <Field
+                icon={Landmark}
+                label="Bank accounts"
+                hint="Current, savings and fixed-deposit balances."
+                suffix="USD"
+                value={form.bankAccounts}
+                onChange={set("bankAccounts")}
+              />
+              <Field
+                icon={Smartphone}
+                label="Digital wallets"
+                hint="Mobile money, payment apps and prepaid balances."
+                suffix="USD"
+                value={form.digitalWallets}
+                onChange={set("digitalWallets")}
+              />
+            </Group>
 
-            <div className="rounded-xl border border-border bg-card p-5">
-              <h2 className="font-display text-base font-semibold text-foreground">
-                Deductions
-              </h2>
-              <div className="mt-5">
+            <Group
+              title="Investments"
+              subtitle="Enter current market value in USD for each holding you own."
+            >
+              <Field
+                icon={Bitcoin}
+                label="Cryptocurrency"
+                hint="Total market value of coins and tokens held."
+                suffix="USD"
+                value={form.crypto}
+                onChange={set("crypto")}
+              />
+              <div>
                 <Field
-                  icon={AlertCircle}
-                  label="Immediate debts & liabilities"
-                  hint="Bills, short-term loans and payables due now."
+                  icon={LineChart}
+                  label="Stocks"
+                  hint="Market value of directly held listed shares."
                   suffix="USD"
-                  value={form.debts}
-                  onChange={set("debts")}
+                  value={form.stocks}
+                  onChange={set("stocks")}
                 />
+                {stocks > 0 && (
+                  <fieldset className="mt-3 rounded-lg border border-gold/30 bg-gold/5 p-4">
+                    <legend className="px-1 text-sm font-medium text-foreground">
+                      How are these shares primarily held?
+                    </legend>
+                    <div className="mt-2 space-y-2">
+                      <RadioOption
+                        name="share-intent"
+                        checked={shareIntent === "trading"}
+                        onChange={() => setShareIntent("trading")}
+                        label="Short-term trading / resale"
+                        hint="Treated as trade goods — full market value is zakatable."
+                      />
+                      <RadioOption
+                        name="share-intent"
+                        checked={shareIntent === "longTerm"}
+                        onChange={() => setShareIntent("longTerm")}
+                        label="Long-term investment / dividends"
+                        hint="Zakat applies to the underlying liquid assets only (25% proxy)."
+                      />
+                    </div>
+                  </fieldset>
+                )}
               </div>
+              <Field
+                icon={PieChart}
+                label="ETFs / mutual funds"
+                hint="Value of pooled fund units you hold."
+                suffix="USD"
+                value={form.funds}
+                onChange={set("funds")}
+              />
+              <Field
+                icon={ScrollText}
+                label="Sukuk"
+                hint="Shariah-compliant investment certificates, at market value."
+                suffix="USD"
+                value={form.sukuk}
+                onChange={set("sukuk")}
+              />
+              <Field
+                icon={Receipt}
+                label="Bonds"
+                hint="Principal value recoverable; interest income is not zakat."
+                suffix="USD"
+                value={form.bonds}
+                onChange={set("bonds")}
+              />
+              <Field
+                icon={Wallet}
+                label="Other investments"
+                hint="Private equity, pensions accessible to you, or any other liquid holding."
+                suffix="USD"
+                value={form.otherInvestments}
+                onChange={set("otherInvestments")}
+              />
+            </Group>
+
+            <Group title="Business & Receivables" subtitle="Trade assets and money owed to you.">
+              <Field
+                icon={Package}
+                label="Business inventory"
+                hint="Trade goods and stock held for sale, at current resale value."
+                suffix="USD"
+                value={form.inventory}
+                onChange={set("inventory")}
+              />
+              <Field
+                icon={HandCoins}
+                label="Receivables"
+                hint="Money owed to you that you strongly expect to recover."
+                suffix="USD"
+                value={form.receivables}
+                onChange={set("receivables")}
+              />
+            </Group>
+
+            <Group title="Deductions">
+              <Field
+                icon={AlertCircle}
+                label="Immediate debts & liabilities"
+                hint="Bills, short-term loans and payables due now."
+                suffix="USD"
+                value={form.debts}
+                onChange={set("debts")}
+              />
               <button
                 type="button"
-                onClick={() => setForm(EMPTY_FORM)}
-                className="mt-5 inline-flex items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                onClick={() => {
+                  setForm(EMPTY_FORM);
+                  setShareIntent("trading");
+                }}
+                className="inline-flex items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
               >
                 <RotateCcw className="h-4 w-4" />
                 Reset form
               </button>
-            </div>
+            </Group>
 
             <div className="flex gap-3 rounded-xl border border-gold/30 bg-gold/5 p-4 text-sm text-muted-foreground">
               <Info className="mt-0.5 h-4 w-4 shrink-0 text-gold-foreground" />
@@ -248,10 +436,7 @@ function ZakatFormPage() {
                 <Row label="Gross assets" value={formatCurrency(result.totalGross)} />
                 <Row label="Less debts" value={`− ${formatCurrency(result.deductions)}`} />
                 <Row label="Net zakatable" value={formatCurrency(result.totalZakatable)} />
-                <Row
-                  label="Silver nisab"
-                  value={formatCurrency(result.nisabThreshold)}
-                />
+                <Row label="Silver nisab" value={formatCurrency(result.nisabThreshold)} />
               </dl>
             </div>
 
@@ -276,36 +461,89 @@ function ZakatFormPage() {
               </div>
             )}
 
-            <div className="rounded-xl border border-border bg-card p-5">
-              <h3 className="font-display text-sm font-semibold text-foreground">
-                Asset breakdown
-              </h3>
-              <ul className="mt-3 space-y-3">
-                {result.breakdown.map((item) => (
-                  <li key={item.id} className="border-b border-border pb-3 last:border-0 last:pb-0">
-                    <div className="flex items-baseline justify-between gap-3">
-                      <span className="text-sm text-foreground">{item.label}</span>
-                      <span className="text-sm font-medium tabular-nums text-foreground">
-                        {formatCurrency(item.zakatableValue)}
-                      </span>
-                    </div>
-                    <p className="mt-1 text-xs text-muted-foreground">{item.reasoning}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {visibleBreakdown.length > 0 && (
+              <div className="rounded-xl border border-border bg-card p-5">
+                <h3 className="font-display text-sm font-semibold text-foreground">
+                  Asset breakdown
+                </h3>
+                <ul className="mt-3 space-y-3">
+                  {visibleBreakdown.map((item) => (
+                    <li
+                      key={item.id}
+                      className="border-b border-border pb-3 last:border-0 last:pb-0"
+                    >
+                      <div className="flex items-baseline justify-between gap-3">
+                        <span className="text-sm text-foreground">{item.label}</span>
+                        <span className="text-sm font-medium tabular-nums text-foreground">
+                          {formatCurrency(item.zakatableValue)}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-xs text-muted-foreground">{item.reasoning}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             <Link
               to="/calculator"
               className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
             >
-              Need crypto, stocks or silver?
+              Open the full calculator
               <ArrowRight className="h-4 w-4" />
             </Link>
           </aside>
         </div>
       </div>
     </div>
+  );
+}
+
+function Group({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="rounded-xl border border-border bg-card p-5">
+      <h2 className="font-display text-base font-semibold text-foreground">{title}</h2>
+      {subtitle ? <p className="mt-1 text-xs text-muted-foreground">{subtitle}</p> : null}
+      <div className="mt-5 space-y-5">{children}</div>
+    </div>
+  );
+}
+
+function RadioOption({
+  name,
+  checked,
+  onChange,
+  label,
+  hint,
+}: {
+  name: string;
+  checked: boolean;
+  onChange: () => void;
+  label: string;
+  hint: string;
+}) {
+  return (
+    <label className="flex cursor-pointer items-start gap-3 rounded-md border border-transparent px-1 py-1 hover:border-border">
+      <input
+        type="radio"
+        name={name}
+        checked={checked}
+        onChange={onChange}
+        className="mt-1 h-4 w-4 accent-primary"
+      />
+      <span>
+        <span className="block text-sm font-medium text-foreground">{label}</span>
+        <span className="block text-xs text-muted-foreground">{hint}</span>
+      </span>
+    </label>
   );
 }
 
