@@ -29,6 +29,7 @@ import {
   formatCurrency,
   PriceMap,
 } from "../lib/zakat";
+import { saveRecord } from "../lib/zakat-history";
 
 export const Route = createFileRoute("/zakat-form")({
   head: () => ({
@@ -106,6 +107,7 @@ function parseAmount(raw: string): number {
 function ZakatFormPage() {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [shareIntent, setShareIntent] = useState<ShareIntent>("trading");
+  const [saved, setSaved] = useState(false);
   const getPrices = useServerFn(fetchMarketPrices);
 
   const { data: prices, isLoading: pricesLoading } = useQuery({
@@ -211,6 +213,24 @@ function ZakatFormPage() {
   const hasInput = result.totalGross > 0;
   const shortfall = Math.max(0, result.nisabThreshold - result.totalZakatable);
   const visibleBreakdown = result.breakdown.filter((item) => item.grossValue > 0);
+
+  const handleSave = () => {
+    saveRecord({
+      date: new Date().toISOString().slice(0, 10),
+      totalGross: result.totalGross,
+      deductions: result.deductions,
+      totalZakatable: result.totalZakatable,
+      nisabThreshold: result.nisabThreshold,
+      zakatDue: result.zakatDue,
+      isLiable: result.isLiable,
+      breakdown: visibleBreakdown.map((item) => ({
+        label: item.label,
+        value: item.zakatableValue,
+      })),
+    });
+    setSaved(true);
+    window.setTimeout(() => setSaved(false), 2500);
+  };
 
   const set = (key: keyof FormState) => (value: string) =>
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -483,6 +503,35 @@ function ZakatFormPage() {
                   ))}
                 </ul>
               </div>
+            )}
+
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={!hasInput}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-gold px-4 py-2 text-sm font-medium text-gold-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+            >
+              {saved ? (
+                <>
+                  <CheckCircle2 className="h-4 w-4" />
+                  Saved to dashboard
+                </>
+              ) : (
+                <>
+                  <ClipboardList className="h-4 w-4" />
+                  Save to dashboard
+                </>
+              )}
+            </button>
+
+            {saved && (
+              <Link
+                to="/dashboard"
+                className="inline-flex w-full items-center justify-center gap-2 text-sm font-medium text-primary hover:underline"
+              >
+                View dashboard
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             )}
 
             <Link
