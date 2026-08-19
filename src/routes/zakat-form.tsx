@@ -107,6 +107,7 @@ function parseAmount(raw: string): number {
 function ZakatFormPage() {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [shareIntent, setShareIntent] = useState<ShareIntent>("trading");
+  const [saved, setSaved] = useState(false);
   const getPrices = useServerFn(fetchMarketPrices);
 
   const { data: prices, isLoading: pricesLoading } = useQuery({
