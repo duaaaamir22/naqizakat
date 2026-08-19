@@ -29,6 +29,7 @@ import {
   formatCurrency,
   PriceMap,
 } from "../lib/zakat";
+import { saveRecord } from "../lib/zakat-history";
 
 export const Route = createFileRoute("/zakat-form")({
   head: () => ({
