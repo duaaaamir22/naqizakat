@@ -212,6 +212,24 @@ function ZakatFormPage() {
   const shortfall = Math.max(0, result.nisabThreshold - result.totalZakatable);
   const visibleBreakdown = result.breakdown.filter((item) => item.grossValue > 0);
 
+  const handleSave = () => {
+    saveRecord({
+      date: new Date().toISOString().slice(0, 10),
+      totalGross: result.totalGross,
+      deductions: result.deductions,
+      totalZakatable: result.totalZakatable,
+      nisabThreshold: result.nisabThreshold,
+      zakatDue: result.zakatDue,
+      isLiable: result.isLiable,
+      breakdown: visibleBreakdown.map((item) => ({
+        label: item.label,
+        value: item.zakatableValue,
+      })),
+    });
+    setSaved(true);
+    window.setTimeout(() => setSaved(false), 2500);
+  };
+
   const set = (key: keyof FormState) => (value: string) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
