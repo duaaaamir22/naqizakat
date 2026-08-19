@@ -505,6 +505,35 @@ function ZakatFormPage() {
               </div>
             )}
 
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={!hasInput}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-gold px-4 py-2 text-sm font-medium text-gold-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+            >
+              {saved ? (
+                <>
+                  <CheckCircle2 className="h-4 w-4" />
+                  Saved to dashboard
+                </>
+              ) : (
+                <>
+                  <ClipboardList className="h-4 w-4" />
+                  Save to dashboard
+                </>
+              )}
+            </button>
+
+            {saved && (
+              <Link
+                to="/dashboard"
+                className="inline-flex w-full items-center justify-center gap-2 text-sm font-medium text-primary hover:underline"
+              >
+                View dashboard
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            )}
+
             <Link
               to="/calculator"
               className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
