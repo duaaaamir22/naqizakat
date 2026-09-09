@@ -1,22 +1,8 @@
 # Zakat App
 
-i need to come up with a zakat tracking app for my thesis in MSc fintech, attaching the form for all further info.
+Naqi is a research prototype that brings together a multi-asset calculator, a historical assessment view, a simulated donation-verification flow and an impact-reporting interface. The prototype was built through Lovable's conversational development environment.
+Naqi makes four contributions at prototype level. The first is integrative: calculation, annual assessment, transaction verification and impact are presented as one journey rather than isolated tools. The second is explanatory: the interface shows asset-level reasoning, the nisab threshold, liability deductions and the zakatable base. The third is critical: implementing the impact layer reveals that transaction transparency is not the same as outcome truth. The fourth is methodological: the project records what a student can achieve through prompt-led development while showing why source review, testing, provenance and domain judgement remain necessary. Together, these contributions support a hybrid assurance model in which blockchain and generative AI are limited components of a wider governed system.
 
-This project was built with [Lovable](https://lovable.dev).
-
-**Live app**: https://naqizakat.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/f289869e-1719-4b80-9fc8-cea8b6c42f82).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 ```sh
 git clone <this-repository-url>
