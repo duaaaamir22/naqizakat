@@ -49,13 +49,14 @@ export interface AssetBreakdown {
 const ZAKAT_RATE = 0.025;
 const GOLD_NISAB_GRAMS = 87.48;
 const SILVER_NISAB_GRAMS = 612.36;
+const AED_PER_USD = 3.6725;
 
 const DEFAULT_PRICES: PriceMap = {
-  goldUsdPerGram: 75,
-  silverUsdPerGram: 0.9,
-  btcUsd: 65000,
-  ethUsd: 3400,
-  usdtUsd: 1,
+  goldUsdPerGram: 75 * AED_PER_USD,
+  silverUsdPerGram: 0.9 * AED_PER_USD,
+  btcUsd: 65000 * AED_PER_USD,
+  ethUsd: 3400 * AED_PER_USD,
+  usdtUsd: AED_PER_USD,
 };
 
 export function getNisabThreshold(prices: PriceMap): number {
@@ -207,9 +208,9 @@ export const fetchMarketPrices = createServerFn({ method: "GET" }).handler(async
         ethereum?: { usd?: number };
         tether?: { usd?: number };
       };
-      btcUsd = cryptoData.bitcoin?.usd ?? btcUsd;
-      ethUsd = cryptoData.ethereum?.usd ?? ethUsd;
-      usdtUsd = cryptoData.tether?.usd ?? usdtUsd;
+      btcUsd = cryptoData.bitcoin?.usd ? cryptoData.bitcoin.usd * AED_PER_USD : btcUsd;
+      ethUsd = cryptoData.ethereum?.usd ? cryptoData.ethereum.usd * AED_PER_USD : ethUsd;
+      usdtUsd = cryptoData.tether?.usd ? cryptoData.tether.usd * AED_PER_USD : usdtUsd;
     }
 
     // Gold and silver fallback prices; free commodity APIs often require keys.
@@ -225,7 +226,7 @@ export const fetchMarketPrices = createServerFn({ method: "GET" }).handler(async
         const metalData = (await metalRes.json()) as { price?: number; currency?: string };
         if (metalData.currency === "USD" && metalData.price) {
           // Convert troy ounce price to per gram (1 troy oz = 31.1035 g).
-          goldUsdPerGram = metalData.price / 31.1035;
+          goldUsdPerGram = (metalData.price / 31.1035) * AED_PER_USD;
         }
       }
     } catch {
@@ -239,7 +240,7 @@ export const fetchMarketPrices = createServerFn({ method: "GET" }).handler(async
       if (silverRes.ok) {
         const silverData = (await silverRes.json()) as { price?: number; currency?: string };
         if (silverData.currency === "USD" && silverData.price) {
-          silverUsdPerGram = silverData.price / 31.1035;
+          silverUsdPerGram = (silverData.price / 31.1035) * AED_PER_USD;
         }
       }
     } catch {
@@ -259,8 +260,8 @@ export const fetchMarketPrices = createServerFn({ method: "GET" }).handler(async
   }
 });
 
-export function formatCurrency(amount: number, currency = "USD"): string {
-  return new Intl.NumberFormat("en-US", {
+export function formatCurrency(amount: number, currency = "AED"): string {
+  return new Intl.NumberFormat("en-AE", {
     style: "currency",
     currency,
     maximumFractionDigits: 2,

@@ -54,11 +54,11 @@ export const Route = createFileRoute("/zakat-form")({
 });
 
 const FALLBACK_PRICES: PriceMap = {
-  goldUsdPerGram: 75,
-  silverUsdPerGram: 0.9,
-  btcUsd: 65000,
-  ethUsd: 3400,
-  usdtUsd: 1,
+  goldUsdPerGram: 275.44,
+  silverUsdPerGram: 3.31,
+  btcUsd: 238712.5,
+  ethUsd: 12486.5,
+  usdtUsd: 3.67,
 };
 
 type ShareIntent = "trading" | "longTerm";
@@ -287,12 +287,12 @@ function ZakatFormPage() {
               />
             </Group>
 
-            <Group title="Cash & Savings" subtitle="All amounts in USD.">
+            <Group title="Cash & Savings" subtitle="All amounts in AED.">
               <Field
                 icon={Banknote}
                 label="Cash"
                 hint="Physical cash you hold at home or on you."
-                suffix="USD"
+                suffix="AED"
                 value={form.cash}
                 onChange={set("cash")}
               />
@@ -300,7 +300,7 @@ function ZakatFormPage() {
                 icon={Landmark}
                 label="Bank accounts"
                 hint="Current, savings and fixed-deposit balances."
-                suffix="USD"
+                suffix="AED"
                 value={form.bankAccounts}
                 onChange={set("bankAccounts")}
               />
@@ -308,7 +308,7 @@ function ZakatFormPage() {
                 icon={Smartphone}
                 label="Digital wallets"
                 hint="Mobile money, payment apps and prepaid balances."
-                suffix="USD"
+                suffix="AED"
                 value={form.digitalWallets}
                 onChange={set("digitalWallets")}
               />
@@ -316,13 +316,13 @@ function ZakatFormPage() {
 
             <Group
               title="Investments"
-              subtitle="Enter current market value in USD for each holding you own."
+              subtitle="Enter current market value in AED for each holding you own."
             >
               <Field
                 icon={Bitcoin}
                 label="Cryptocurrency"
                 hint="Total market value of coins and tokens held."
-                suffix="USD"
+                suffix="AED"
                 value={form.crypto}
                 onChange={set("crypto")}
               />
@@ -331,7 +331,7 @@ function ZakatFormPage() {
                   icon={LineChart}
                   label="Stocks"
                   hint="Market value of directly held listed shares."
-                  suffix="USD"
+                  suffix="AED"
                   value={form.stocks}
                   onChange={set("stocks")}
                 />
@@ -363,7 +363,7 @@ function ZakatFormPage() {
                 icon={PieChart}
                 label="ETFs / mutual funds"
                 hint="Value of pooled fund units you hold."
-                suffix="USD"
+                suffix="AED"
                 value={form.funds}
                 onChange={set("funds")}
               />
@@ -371,7 +371,7 @@ function ZakatFormPage() {
                 icon={ScrollText}
                 label="Sukuk"
                 hint="Shariah-compliant investment certificates, at market value."
-                suffix="USD"
+                suffix="AED"
                 value={form.sukuk}
                 onChange={set("sukuk")}
               />
@@ -379,7 +379,7 @@ function ZakatFormPage() {
                 icon={Receipt}
                 label="Bonds"
                 hint="Principal value recoverable; interest income is not zakat."
-                suffix="USD"
+                suffix="AED"
                 value={form.bonds}
                 onChange={set("bonds")}
               />
@@ -387,7 +387,7 @@ function ZakatFormPage() {
                 icon={Wallet}
                 label="Other investments"
                 hint="Private equity, pensions accessible to you, or any other liquid holding."
-                suffix="USD"
+                suffix="AED"
                 value={form.otherInvestments}
                 onChange={set("otherInvestments")}
               />
@@ -398,7 +398,7 @@ function ZakatFormPage() {
                 icon={Package}
                 label="Business inventory"
                 hint="Trade goods and stock held for sale, at current resale value."
-                suffix="USD"
+                suffix="AED"
                 value={form.inventory}
                 onChange={set("inventory")}
               />
@@ -406,7 +406,7 @@ function ZakatFormPage() {
                 icon={HandCoins}
                 label="Receivables"
                 hint="Money owed to you that you strongly expect to recover."
-                suffix="USD"
+                suffix="AED"
                 value={form.receivables}
                 onChange={set("receivables")}
               />
@@ -417,7 +417,7 @@ function ZakatFormPage() {
                 icon={AlertCircle}
                 label="Immediate debts & liabilities"
                 hint="Bills, short-term loans and payables due now."
-                suffix="USD"
+                suffix="AED"
                 value={form.debts}
                 onChange={set("debts")}
               />

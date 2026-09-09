@@ -63,11 +63,11 @@ function CalculatorPage() {
   });
 
   const priceMap: PriceMap = prices ?? {
-    goldUsdPerGram: 75,
-    silverUsdPerGram: 0.9,
-    btcUsd: 65000,
-    ethUsd: 3400,
-    usdtUsd: 1,
+    goldUsdPerGram: 275.44,
+    silverUsdPerGram: 3.31,
+    btcUsd: 238712.5,
+    ethUsd: 12486.5,
+    usdtUsd: 3.67,
   };
 
   const result = computeZakat(assets, debts, priceMap);
@@ -120,7 +120,7 @@ function CalculatorPage() {
             <PriceBadge label="Silver/g" value={priceMap.silverUsdPerGram} />
             <PriceBadge label="BTC" value={priceMap.btcUsd} />
             <PriceBadge label="ETH" value={priceMap.ethUsd} />
-            <PriceBadge label="USDT" value={priceMap.usdtUsd} />
+            <PriceBadge label="USDT/AED" value={priceMap.usdtUsd} />
           </div>
         </div>
 
@@ -344,7 +344,7 @@ function PriceBadge({ label, value }: { label: string; value: number }) {
     <div className="rounded-lg bg-background p-2 text-center">
       <div className="text-xs text-muted-foreground">{label}</div>
       <div className="font-medium text-foreground">
-        {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value)}
+        {new Intl.NumberFormat("en-AE", { style: "currency", currency: "AED", maximumFractionDigits: 0 }).format(value)}
       </div>
     </div>
   );
@@ -419,7 +419,7 @@ function AssetRow({
                   className="w-40 rounded-md border border-border bg-background px-2 py-1 text-right text-sm text-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
                   placeholder="0"
                 />
-                <span className="text-muted-foreground">USD</span>
+                <span className="text-muted-foreground">AED</span>
               </label>
             )}
 
