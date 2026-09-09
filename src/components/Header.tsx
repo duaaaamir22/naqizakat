@@ -92,14 +92,14 @@ function MobileNav() {
             <Link
               key={item.to}
               to={item.to}
-              className={`flex flex-col items-center justify-center gap-1 rounded-md px-2 py-2 text-xs transition-colors ${
+              className={`flex flex-col items-center justify-center gap-1 rounded-md px-1 py-2 text-[10px] leading-none transition-colors ${
                 isActive
                   ? "bg-accent text-accent-foreground"
                   : "text-muted-foreground hover:bg-accent/50"
               }`}
             >
-              <Icon className="h-4 w-4" />
-              <span>{item.label}</span>
+              <Icon className="h-4 w-4 shrink-0" />
+              <span className="whitespace-nowrap">{item.shortLabel}</span>
             </Link>
           );
         })}
