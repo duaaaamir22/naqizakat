@@ -10,11 +10,11 @@ import naqiMark from "../assets/naqi-mark.png.asset.json";
 
 
 const navItems = [
-  { to: "/calculator", label: "Calculator", icon: Calculator },
-  { to: "/zakat-form", label: "My Assets", icon: ClipboardList },
-  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/impact", label: "Impact", icon: Leaf },
-  { to: "/verify", label: "Verify", icon: ShieldCheck },
+  { to: "/calculator", label: "Calculator", shortLabel: "Calc", icon: Calculator },
+  { to: "/zakat-form", label: "My Assets", shortLabel: "Assets", icon: ClipboardList },
+  { to: "/dashboard", label: "Dashboard", shortLabel: "Dash", icon: LayoutDashboard },
+  { to: "/impact", label: "Impact", shortLabel: "Impact", icon: Leaf },
+  { to: "/verify", label: "Verify", shortLabel: "Verify", icon: ShieldCheck },
 ];
 
 
