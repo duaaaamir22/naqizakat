@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Heart, Users, GraduationCap, Stethoscope, Utensils, Sprout } from "lucide-react";
+import { formatCurrency } from "../lib/zakat";
 
 export const Route = createFileRoute("/impact")({
   head: () => ({
@@ -94,7 +95,7 @@ function ImpactPage() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          <ImpactStat label="Total donated" value={`$${summary.totalDonated.toLocaleString()}`} />
+          <ImpactStat label="Total donated" value={formatCurrency(summary.totalDonated)} />
           <ImpactStat label="Beneficiaries" value={summary.beneficiaries.toString()} />
           <ImpactStat label="Families" value={summary.families.toString()} />
           <ImpactStat label="Children" value={summary.children.toString()} />
@@ -128,7 +129,7 @@ function ImpactPage() {
                 <div className="mt-4 border-t border-border pt-4">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">{impact.charity}</span>
-                    <span className="font-medium text-gold">${impact.amount.toLocaleString()}</span>
+                    <span className="font-medium text-gold">{formatCurrency(impact.amount)}</span>
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">{impact.proof}</p>
                 </div>

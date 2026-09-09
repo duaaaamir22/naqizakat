@@ -53,7 +53,7 @@ function VerifyPage() {
   });
 
   const handleDonate = async () => {
-    const record = await donate({ data: { amount, currency: "USDT", charityIndex, impact: "" } });
+    const record = await donate({ data: { amount, currency: "AED", charityIndex, impact: "" } });
     setNewRecord(record);
   };
 
@@ -79,7 +79,7 @@ function VerifyPage() {
           <h2 className="font-display text-lg font-semibold text-foreground">Simulate a donation</h2>
           <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end">
             <label className="flex-1">
-              <span className="text-sm text-muted-foreground">Amount (USDT)</span>
+              <span className="text-sm text-muted-foreground">Amount (AED)</span>
               <input
                 type="number"
                 min={1}
@@ -167,7 +167,7 @@ function VerifyPage() {
                         />
                         <span className="text-foreground">{stage.stage}</span>
                       </div>
-                      <span className="text-muted-foreground">${stage.amount.toLocaleString()}</span>
+                      <span className="text-muted-foreground">AED {stage.amount.toLocaleString()}</span>
                     </div>
                   ))}
                 </div>

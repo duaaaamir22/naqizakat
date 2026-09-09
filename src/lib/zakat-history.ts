@@ -16,7 +16,9 @@ export interface ZakatRecord {
   breakdown: { label: string; value: number }[];
 }
 
-const STORAGE_KEY = "naqi.zakat.history.v1";
+const STORAGE_KEY = "naqi.zakat.history.v2-aed";
+const LEGACY_USD_STORAGE_KEY = "naqi.zakat.history.v1";
+const AED_PER_USD = 3.6725;
 
 function isRecord(value: unknown): value is ZakatRecord {
   if (!value || typeof value !== "object") return false;
@@ -33,14 +35,33 @@ function isRecord(value: unknown): value is ZakatRecord {
 export function loadHistory(): ZakatRecord[] {
   if (typeof window === "undefined") return [];
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
+    const currentRaw = window.localStorage.getItem(STORAGE_KEY);
+    const legacyRaw = window.localStorage.getItem(LEGACY_USD_STORAGE_KEY);
+    const raw = currentRaw ?? legacyRaw;
     if (!raw) return [];
     const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    return parsed
+    const records = parsed
       .filter(isRecord)
       .map((r) => ({ ...r, breakdown: Array.isArray(r.breakdown) ? r.breakdown : [] }))
       .sort((a, b) => a.date.localeCompare(b.date));
+    if (!currentRaw && legacyRaw) {
+      const converted = records.map((record) => ({
+        ...record,
+        totalGross: record.totalGross * AED_PER_USD,
+        deductions: record.deductions * AED_PER_USD,
+        totalZakatable: record.totalZakatable * AED_PER_USD,
+        nisabThreshold: record.nisabThreshold * AED_PER_USD,
+        zakatDue: record.zakatDue * AED_PER_USD,
+        breakdown: record.breakdown.map((item) => ({
+          ...item,
+          value: item.value * AED_PER_USD,
+        })),
+      }));
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(converted));
+      return converted;
+    }
+    return records;
   } catch {
     return [];
   }
