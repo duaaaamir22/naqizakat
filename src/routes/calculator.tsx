@@ -120,7 +120,7 @@ function CalculatorPage() {
             <PriceBadge label="Silver/g" value={priceMap.silverUsdPerGram} />
             <PriceBadge label="BTC" value={priceMap.btcUsd} />
             <PriceBadge label="ETH" value={priceMap.ethUsd} />
-            <PriceBadge label="USDT/AED" value={priceMap.usdtUsd} />
+            <PriceBadge label="Tether" value={priceMap.usdtUsd} />
           </div>
         </div>
 
